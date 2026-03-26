@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jordan Lee — Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0A0A0A;
+      --black2: #111111;
+      --black3: #1A1A1A;
+      --white: #F2F2F0;
+      --white2: #C8C8C4;
+      --dim: #555550;
+      --yellow: #E8D44D;
+      --yellow2: rgba(232,212,77,0.12);
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Bebas Neue', sans-serif;
+      --border: rgba(255,255,255,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--mono);
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: crosshair;
+    }
+
+    /* NOISE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.5;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 3rem;
+      background: rgba(10,10,10,0.95);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--display); font-size: 1.4rem; letter-spacing: 0.05em;
+      text-decoration: none; color: var(--yellow);
+    }
+    .nav-links { display: flex; gap: 3rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--dim); text-decoration: none; font-weight: 400;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--yellow); }
+
+    /* HERO */
+    .hero {
+      position: relative; z-index: 1;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 3rem 4rem;
+      overflow: hidden;
+    }
+    .hero-bg-text {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      font-family: var(--display);
+      font-size: clamp(120px, 20vw, 260px);
+      color: rgba(255,255,255,0.025);
+      white-space: nowrap; pointer-events: none; user-select: none;
+      letter-spacing: -0.02em;
+    }
+    .hero-line {
+      display: flex; align-items: baseline; justify-content: space-between;
+      border-top: 1px solid var(--border);
+      padding-top: 2rem; margin-top: 2rem;
+    }
+    .hero-line:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+    h1 {
+      font-family: var(--display);
+      font-size: clamp(5rem, 13vw, 14rem);
+      line-height: 0.88; letter-spacing: -0.01em;
+      color: var(--white);
+    }
+    h1 .accent { color: var(--yellow); }
+    .hero-meta {
+      display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;
+    }
+    .hero-tag {
+      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--dim);
+    }
+    .hero-status {
+      font-size: 0.7rem; letter-spacing: 0.1em; color: var(--yellow);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .status-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--yellow);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+    .hero-desc {
+      font-size: 0.85rem; line-height: 1.75; color: var(--white2);
+      max-width: 380px;
+    }
+    .hero-btns {
+      display: flex; gap: 1rem; margin-top: 3rem;
+    }
+    .btn-y {
+      display: inline-block; padding: 0.8rem 2rem;
+      background: var(--yellow); color: var(--black);
+      font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.15em;
+      text-transform: uppercase; font-weight: 500;
+      text-decoration: none; transition: opacity 0.2s;
+    }
+    .btn-y:hover { opacity: 0.8; }
+    .btn-ghost {
+      display: inline-block; padding: 0.8rem 2rem;
+      border: 1px solid var(--border); color: var(--white2);
+      font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.15em;
+      text-transform: uppercase; font-weight: 400;
+      text-decoration: none; transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--yellow); color: var(--yellow); }
+
+    /* MARQUEE */
+    .marquee-wrap {
+      position: relative; z-index: 1;
+      overflow: hidden; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--black2);
+      padding: 1rem 0;
+    }
+    .marquee-track {
+      display: flex; gap: 3rem; white-space: nowrap;
+      animation: scroll 20s linear infinite;
+    }
+    .marquee-item {
+      font-family: var(--display); font-size: 1.2rem;
+      letter-spacing: 0.1em; color: var(--dim);
+      display: flex; align-items: center; gap: 3rem; flex-shrink: 0;
+    }
+    .marquee-dot { color: var(--yellow); }
+    @keyframes scroll { to { transform: translateX(-50%); } }
+
+    /* SECTIONS */
+    .section { position: relative; z-index: 1; padding: 8rem 3rem; }
+    .section-alt { background: var(--black2); }
+    .section-num {
+      font-family: var(--display); font-size: 5rem;
+      color: rgba(255,255,255,0.05); line-height: 1;
+      margin-bottom: -1.5rem; display: block;
+    }
+    .section-label {
+      font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--yellow); margin-bottom: 1rem; display: block;
+    }
+    h2 {
+      font-family: var(--display);
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      line-height: 0.9; letter-spacing: 0.02em;
+      color: var(--white); margin-bottom: 0;
+    }
+
+    /* ABOUT */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; margin-top: 5rem; align-items: start; }
+    .about-body p { font-size: 0.88rem; line-height: 1.9; color: var(--white2); margin-bottom: 1.4rem; }
+    .code-block {
+      background: var(--black3); border: 1px solid var(--border);
+      padding: 2rem;
+      font-family: var(--mono); font-size: 0.8rem; line-height: 1.8;
+    }
+    .code-line { display: flex; gap: 1.5rem; }
+    .code-num { color: var(--dim); user-select: none; min-width: 20px; text-align: right; }
+    .code-kw { color: var(--yellow); }
+    .code-str { color: #7EC8A4; }
+    .code-var { color: #B4DCFF; }
+    .code-punct { color: var(--dim); }
+
+    /* STACK */
+    .stack-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--border); margin-top: 5rem; }
+    .stack-item {
+      background: var(--black); padding: 2rem 1.5rem;
+      text-align: center;
+      transition: background 0.2s;
+    }
+    .stack-item:hover { background: var(--yellow2); }
+    .stack-icon { font-size: 1.5rem; margin-bottom: 0.8rem; }
+    .stack-name { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white2); }
+
+    /* PROJECTS */
+    .proj-list { margin-top: 5rem; }
+    .proj-item {
+      display: grid; grid-template-columns: 60px 1fr auto;
+      gap: 2rem; align-items: center;
+      padding: 2rem 0; border-bottom: 1px solid var(--border);
+      text-decoration: none; color: var(--white);
+      transition: padding-left 0.3s;
+    }
+    .proj-item:hover { padding-left: 1rem; }
+    .proj-item:hover .proj-arr { color: var(--yellow); }
+    .proj-n {
+      font-family: var(--display); font-size: 1.5rem; color: var(--dim);
+    }
+    .proj-title { font-family: var(--display); font-size: 1.5rem; letter-spacing: 0.02em; }
+    .proj-tags { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--yellow); margin-top: 0.3rem; }
+    .proj-arr { font-size: 1.2rem; color: var(--dim); transition: color 0.2s; }
+
+    /* CONTACT */
+    .contact-big {
+      font-family: var(--display);
+      font-size: clamp(3rem, 9vw, 9rem);
+      line-height: 0.9; letter-spacing: 0.02em; color: var(--white);
+      text-decoration: none;
+      display: block; margin-top: 3rem;
+      transition: color 0.2s;
+    }
+    .contact-big:hover { color: var(--yellow); }
+    .contact-sub {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);
+    }
+    .contact-info { font-size: 0.75rem; letter-spacing: 0.1em; color: var(--dim); }
+    .social-row { display: flex; gap: 2rem; }
+    .social-row a {
+      font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--dim); text-decoration: none; transition: color 0.2s;
+    }
+    .social-row a:hover { color: var(--yellow); }
+
+    /* FOOTER */
+    footer {
+      position: relative; z-index: 1;
+      padding: 1.5rem 3rem; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    footer p { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); }
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { padding: 0 1.5rem 3rem; }
+      h1 { font-size: clamp(4rem, 15vw, 8rem); }
+      .section { padding: 5rem 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .stack-grid { grid-template-columns: repeat(2,1fr); }
+      .proj-item { grid-template-columns: 40px 1fr auto; gap: 1rem; }
+      footer { flex-direction: column; gap: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#" class="nav-logo">J.Lee</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Work</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg-text">CODE</div>
+
+    <div style="position:relative;z-index:2">
+      <div style="margin-bottom:3rem">
+        <div style="font-size:0.68rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--dim);margin-bottom:1rem">
+          <span style="color:var(--yellow)">—</span> Full-Stack Developer · Class of 2026
+        </div>
+      </div>
+
+      <div class="hero-line" style="border:none;padding:0;margin:0">
+        <h1>JORDAN<br><span class="accent">LEE.</span></h1>
+        <div class="hero-meta">
+          <span class="hero-tag">Available for internships</span>
+          <span class="hero-status"><span class="status-dot"></span>Seeking opportunities</span>
+          <p class="hero-desc" style="margin-top:1rem">I build fast, functional, and beautiful software. CS student by day, open source contributor by night.</p>
+        </div>
+      </div>
+
+      <div class="hero-btns">
+        <a href="#projects" class="btn-y">View Work</a>
+        <a href="#contact" class="btn-ghost">Hire Me</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <div class="marquee-item">JAVASCRIPT <span class="marquee-dot">✦</span></div>
+      <div class="marquee-item">PYTHON <span class="marquee-dot">✦</span></div>
+      <div class="marquee-item">REACT <span class="marquee-dot">✦</span></div>
+      <div class="marquee-item">NODE.JS <span class="marquee-dot">✦</span></div>
+      <div class="marquee-item">SQL <span class="marquee-dot">✦</span></div>
+      <div class="marquee-item">MACHINE LEARNING <span class="marquee-dot">✦</span></div>
+      <div class="marquee-item">JAVASCRIPT <span class="marquee-dot">✦</span></div>
+      <div class="marquee-item">PYTHON <span class="marquee-dot">✦</span></div>
+      <div class="marquee-item">REACT <span class="marquee-dot">✦</span></div>
+      <div class="marquee-item">NODE.JS <span class="marquee-dot">✦</span></div>
+      <div class="marquee-item">SQL <span class="marquee-dot">✦</span></div>
+      <div class="marquee-item">MACHINE LEARNING <span class="marquee-dot">✦</span></div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="section section-alt" id="about">
+    <div style="max-width:1080px;margin:0 auto">
+      <span class="section-num">01</span>
+      <span class="section-label">About</span>
+      <h2>WHO I AM</h2>
+      <div class="about-grid reveal">
+        <div class="about-body">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. I'm a 17-year-old software developer who's been writing code since middle school. What started as curiosity turned into a full obsession with building tools that solve real problems.</p>
+          <p>I specialize in full-stack web development and have a growing interest in machine learning. I'm currently looking for internship opportunities where I can contribute meaningfully and continue learning from experienced engineers.</p>
+          <p>When I'm not coding, I'm competing in hackathons, contributing to open source, or mentoring younger students in my school's CS club.</p>
+        </div>
+        <div class="code-block">
+          <div class="code-line"><span class="code-num">1</span><span><span class="code-kw">const</span> <span class="code-var">jordan</span> <span class="code-punct">=</span> <span class="code-punct">{</span></span></div>
+          <div class="code-line"><span class="code-num">2</span><span>  <span class="code-var">role</span><span class="code-punct">:</span> <span class="code-str">"Student Developer"</span><span class="code-punct">,</span></span></div>
+          <div class="code-line"><span class="code-num">3</span><span>  <span class="code-var">school</span><span class="code-punct">:</span> <span class="code-str">"Westview High"</span><span class="code-punct">,</span></span></div>
+          <div class="code-line"><span class="code-num">4</span><span>  <span class="code-var">gpa</span><span class="code-punct">:</span> <span class="code-str">4.0</span><span class="code-punct">,</span></span></div>
+          <div class="code-line"><span class="code-num">5</span><span>  <span class="code-var">skills</span><span class="code-punct">:</span> <span class="code-punct">[</span></span></div>
+          <div class="code-line"><span class="code-num">6</span><span>    <span class="code-str">"React"</span><span class="code-punct">,</span> <span class="code-str">"Node"</span><span class="code-punct">,</span> <span class="code-str">"Python"</span></span></div>
+          <div class="code-line"><span class="code-num">7</span><span>  <span class="code-punct">]</span><span class="code-punct">,</span></span></div>
+          <div class="code-line"><span class="code-num">8</span><span>  <span class="code-var">available</span><span class="code-punct">:</span> <span class="code-kw">true</span></span></div>
+          <div class="code-line"><span class="code-num">9</span><span><span class="code-punct">}</span></span></div>
+        </div>
+      </div>
+
+      <div class="stack-grid reveal">
+        <div class="stack-item"><div class="stack-icon">⚛️</div><div class="stack-name">React</div></div>
+        <div class="stack-item"><div class="stack-icon">🟨</div><div class="stack-name">JavaScript</div></div>
+        <div class="stack-item"><div class="stack-icon">🐍</div><div class="stack-name">Python</div></div>
+        <div class="stack-item"><div class="stack-icon">🗄️</div><div class="stack-name">SQL</div></div>
+        <div class="stack-item"><div class="stack-icon">🌐</div><div class="stack-name">Node.js</div></div>
+        <div class="stack-item"><div class="stack-icon">🐳</div><div class="stack-name">Docker</div></div>
+        <div class="stack-item"><div class="stack-icon">☁️</div><div class="stack-name">AWS</div></div>
+        <div class="stack-item"><div class="stack-icon">🤖</div><div class="stack-name">ML / AI</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="section" id="projects">
+    <div style="max-width:1080px;margin:0 auto">
+      <span class="section-num">02</span>
+      <span class="section-label">Selected Work</span>
+      <h2>PROJECTS</h2>
+      <div class="proj-list reveal">
+        <a href="#" class="proj-item">
+          <span class="proj-n">01</span>
+          <div>
+            <div class="proj-title">AI Study Companion</div>
+            <div class="proj-tags">React · Python · OpenAI API</div>
+          </div>
+          <span class="proj-arr">→</span>
+        </a>
+        <a href="#" class="proj-item">
+          <span class="proj-n">02</span>
+          <div>
+            <div class="proj-title">Real-Time Chat App</div>
+            <div class="proj-tags">Node.js · WebSocket · MongoDB</div>
+          </div>
+          <span class="proj-arr">→</span>
+        </a>
+        <a href="#" class="proj-item">
+          <span class="proj-n">03</span>
+          <div>
+            <div class="proj-title">Campus Event Platform</div>
+            <div class="proj-tags">Next.js · Supabase · Tailwind</div>
+          </div>
+          <span class="proj-arr">→</span>
+        </a>
+        <a href="#" class="proj-item">
+          <span class="proj-n">04</span>
+          <div>
+            <div class="proj-title">ML Price Predictor</div>
+            <div class="proj-tags">Python · scikit-learn · Pandas</div>
+          </div>
+          <span class="proj-arr">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section section-alt" id="contact">
+    <div style="max-width:1080px;margin:0 auto">
+      <span class="section-num">03</span>
+      <span class="section-label">Contact</span>
+      <h2>LET'S BUILD<br>SOMETHING.</h2>
+      <a href="mailto:jordan@example.com" class="contact-big">jordan@example.com</a>
+      <div class="contact-sub">
+        <span class="contact-info">Open to internships · Remote or Bay Area</span>
+        <div class="social-row">
+          <a href="#">GitHub</a>
+          <a href="#">LinkedIn</a>
+          <a href="#">Resume</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Jordan Lee</p>
+    <p>Built from scratch.</p>
+  </footer>
+
+  <script>
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>
